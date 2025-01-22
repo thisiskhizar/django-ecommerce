@@ -1,5 +1,7 @@
-{% extends "store/base.html" %} {% load static %} {% block content %} {% if
-cart.items.all %}
+{% extends "store/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% if cart.items.all %}
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
   <div class="container">
@@ -213,4 +215,6 @@ cart.items.all %}
     </a>
   </div>
 </section>
-{% endif %} {% endblock content %}
+{% endif %} 
+
+{% endblock content %}

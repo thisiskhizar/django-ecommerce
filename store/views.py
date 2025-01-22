@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import DetailView
+
+from carts.models import Cart, CartItem
 from .models import Category, Product
 
 
@@ -46,3 +48,28 @@ class ProductDetailView(DetailView):
         product = get_object_or_404(Product, slug=product_slug, category=category)
 
         return product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the product from the context
+        product = self.get_object()
+
+        # Determine the cart based on the user or session
+        if self.request.user.is_authenticated:
+            cart = Cart.objects.filter(user=self.request.user).first()
+        else:
+            if not self.request.session.session_key:
+                self.request.session.create()
+            session_key = self.request.session.session_key
+            cart = Cart.objects.filter(session_key=session_key).first()
+
+        # Check if the product is in the cart
+        in_cart = False
+        if cart:
+            in_cart = CartItem.objects.filter(cart=cart, product=product).exists()
+
+        # Add `in_cart` to the context
+        context['in_cart'] = in_cart
+
+        return context
