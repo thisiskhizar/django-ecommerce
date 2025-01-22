@@ -1,33 +1,31 @@
-{% extends "store/base.html" %} 
-{% load static %} 
-{% block content %}
+{% extends "store/base.html" %} {% load static %} {% block content %}
 
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
-    <div class="container">
-      <!-- Dynamic Title -->
-      <h2 class="title-page">
+  <div class="container">
+    <!-- Dynamic Title -->
+    <h2 class="title-page">
+      {% if category %} {{ category.name }} {% else %} Our Store {% endif %}
+    </h2>
+
+    <!-- Dynamic Breadcrumb -->
+    <nav>
+      <ol class="breadcrumb text-white">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'store-list' %}">Store</a>
+        </li>
         {% if category %}
+        <li class="breadcrumb-item active" aria-current="page">
           {{ category.name }}
-        {% else %}
-          Our Store
+        </li>
         {% endif %}
-      </h2>
-  
-      <!-- Dynamic Breadcrumb -->
-      <nav>
-        <ol class="breadcrumb text-white">
-          <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'store-list' %}">Store</a></li>
-          {% if category %}
-            <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
-          {% endif %}
-        </ol>
-      </nav>
-    </div>
-    <!-- container // -->
-  </section>
-  
+      </ol>
+    </nav>
+  </div>
+  <!-- container // -->
+</section>
+
 <!-- ========================= SECTION INTRO END// ========================= -->
 
 <!-- ========================= SECTION CONTENT ========================= -->
@@ -67,10 +65,10 @@
                 </form>
 
                 <ul class="list-menu">
-                    <li><a href="{% url 'store-list' %}"> All Products</a></li>
-                    {% for cat in store_categories|slice:":6" %}
-                    <li><a href="{{cat.get_url}}"> {{ cat.name }}</a></li>
-                    {% endfor %}
+                  <li><a href="{% url 'store-list' %}"> All Products</a></li>
+                  {% for cat in store_categories|slice:":6" %}
+                  <li><a href="{{cat.get_url}}"> {{ cat.name }}</a></li>
+                  {% endfor %}
                 </ul>
               </div>
               <!-- card-body.// -->
@@ -365,13 +363,19 @@
               <!-- img-wrap.// -->
               <figcaption class="info-wrap">
                 <div class="fix-height">
-                  <a href="{{ product.get_absolute_url }}" class="title">{{product.name}}</a>
+                  <a href="{{ product.get_absolute_url }}" class="title"
+                    >{{product.name}}</a
+                  >
                   <div class="price-wrap mt-2">
                     <span class="price">${{product.price}}</span>
                   </div>
                   <!-- price-wrap.// -->
                 </div>
-                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                <a
+                  href="{% url 'add-to-cart' product.id %}"
+                  class="btn btn-block btn-primary"
+                  >Add to cart
+                </a>
               </figcaption>
             </figure>
           </div>

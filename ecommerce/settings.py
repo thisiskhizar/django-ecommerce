@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     
     # Installed apps for eCommerce
     'store.apps.StoreConfig',  # our store app
+    'carts.apps.CartsConfig',
     'accounts.apps.AccountsConfig',
 ]
 
